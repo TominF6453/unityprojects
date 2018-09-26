@@ -12,16 +12,21 @@ public class MainGridScript : MonoBehaviour {
 
 	private Transform trns; // Parent object's transform.
 	private float size; // Size as a square, 5x5 = 25 blocks.
+	private const float maxSize = 25f;
 	private string[,] gridArray;
 	private GameObject[,] gridArrayObjs;
+
+	private Vector3 taploc = Vector3.zero;
+	private Vector3 campos = Vector3.zero;
+	private Vector3 curpos = Vector3.zero;
 
 	private int xpos, ypos;
 
 	// Use this for initialization
 	void Start () {
 		size = 5f;
-		gridArray = new string[Mathf.FloorToInt(size), Mathf.FloorToInt(size)];
-		gridArrayObjs = new GameObject[Mathf.FloorToInt(size), Mathf.FloorToInt(size)];
+		gridArray = new string[Mathf.FloorToInt(maxSize), Mathf.FloorToInt(maxSize)];
+		gridArrayObjs = new GameObject[Mathf.FloorToInt(maxSize), Mathf.FloorToInt(maxSize)];
 		trns = gameObject.transform;
 		genGrid();
 	}
@@ -46,7 +51,17 @@ public class MainGridScript : MonoBehaviour {
 			coords.text = string.Format("({0}, {1})", -1, -1);
 		}
 
-		if (Input.GetMouseButtonDown(0) && xpos > -1) {
+		if (Input.GetMouseButtonDown(0)) {
+			taploc = Input.mousePosition;
+			campos = cam.transform.position;
+		}
+
+		if (Input.GetMouseButton(0)) {
+			curpos = Input.mousePosition;
+			DraggingCam();
+		}
+
+		if (Input.GetMouseButtonUp(0) && xpos > -1 && Input.mousePosition == taploc) {
 			if (gridArray[xpos, ypos] == "Empty") {
 				gridArray[xpos, ypos] = "Selected";
 				gridArrayObjs[xpos,ypos] = Instantiate(toggleObj, new Vector3(xpos + 0.5f, ypos + 0.5f, -2), new Quaternion());
@@ -61,10 +76,23 @@ public class MainGridScript : MonoBehaviour {
 	void genGrid() {
 		trns.localScale = new Vector3(size, size);
 		trns.position = new Vector3(size / 2, size / 2);
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
+		for (int x = 0; x < maxSize; x++) {
+			for (int y = 0; y < maxSize; y++) {
 				gridArray[x, y] = "Empty";
 			}
 		}
+	}
+
+	void DraggingCam() {
+		Vector3 dir = cam.ScreenToWorldPoint(curpos) - cam.ScreenToWorldPoint(taploc);
+		dir *= -1;
+		Vector3 pos = campos + dir;
+		cam.transform.position = pos;
+	}
+
+	public void AddSize() {
+		size++;
+		trns.localScale = new Vector3(size, size);
+		trns.position = new Vector3(size / 2, size / 2);
 	}
 }
