@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33470599002212826}
   - component: {fileID: 23954534322064370}
   m_Layer: 0
-  m_Name: ToggleTest
+  m_Name: Wire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 44d54cd31eb9076468d0bb436d19cb4e, type: 2}
+  - {fileID: 2100000, guid: dde19bfed855de94d9aab7150f46b725, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
