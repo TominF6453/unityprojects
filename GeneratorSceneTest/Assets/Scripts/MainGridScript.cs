@@ -74,13 +74,19 @@ public class MainGridScript : MonoBehaviour {
 	}
 
 	void genGrid() {
-		trns.localScale = new Vector3(size, size);
-		trns.position = new Vector3(size / 2, size / 2);
+		trns.localScale = new Vector3(size, size, 1);
+		trns.position = new Vector3(size / 2, size / 2, 1);
 		for (int x = 0; x < maxSize; x++) {
 			for (int y = 0; y < maxSize; y++) {
 				gridArray[x, y] = "Empty";
 			}
 		}
+
+		// Manage material tiling
+		MeshRenderer mr = GetComponent<MeshRenderer>();
+		Material material = mr.material;
+		material.mainTextureScale = new Vector2(size, size);
+		// Manage material tiling
 	}
 
 	void DraggingCam() {
@@ -92,7 +98,13 @@ public class MainGridScript : MonoBehaviour {
 
 	public void AddSize() {
 		size++;
-		trns.localScale = new Vector3(size, size);
-		trns.position = new Vector3(size / 2, size / 2);
+		trns.localScale = new Vector3(size, size, 1);
+		trns.position = new Vector3(size / 2, size / 2, 1);
+
+		// Manage material tiling
+		MeshRenderer mr = GetComponent<MeshRenderer>();
+		Material material = mr.material;
+		material.mainTextureScale = new Vector2(size, size);
+		// Manage material tiling
 	}
 }
