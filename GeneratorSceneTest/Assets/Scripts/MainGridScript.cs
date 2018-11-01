@@ -13,8 +13,8 @@ public class MainGridScript : MonoBehaviour {
 	private Transform trns; // Parent object's transform.
 	private float size; // Size as a square, 5x5 = 25 blocks.
 	private const float maxSize = 25f;
-	private string[,] gridArray;
-	private GameObject[,] gridArrayObjs;
+	private BuildingBase[,] gridArray; // The array of buildings in data, handles calculations.
+	private GameObject[,] gridArrayObjs; // The array of buildings in the scene, handles sprite changes, removal, visible elements.
 
 	private Vector3 taploc = Vector3.zero;
 	private Vector3 campos = Vector3.zero;
@@ -25,7 +25,7 @@ public class MainGridScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		size = 5f;
-		gridArray = new string[Mathf.FloorToInt(maxSize), Mathf.FloorToInt(maxSize)];
+		gridArray = new BuildingBase[Mathf.FloorToInt(maxSize), Mathf.FloorToInt(maxSize)];
 		gridArrayObjs = new GameObject[Mathf.FloorToInt(maxSize), Mathf.FloorToInt(maxSize)];
 		trns = gameObject.transform;
 		genGrid();
@@ -78,7 +78,7 @@ public class MainGridScript : MonoBehaviour {
 		trns.position = new Vector3(size / 2, size / 2, 1);
 		for (int x = 0; x < maxSize; x++) {
 			for (int y = 0; y < maxSize; y++) {
-				gridArray[x, y] = "Empty";
+				gridArray[x, y] = new BuildingEmpty();
 			}
 		}
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingBase : MonoBehaviour {
+public abstract class BuildingBase : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
