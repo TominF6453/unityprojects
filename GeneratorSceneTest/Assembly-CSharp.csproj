@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\BuildingBase.cs" />
-    <Compile Include="Assets\Scripts\BuildingEmpty.cs" />
     <Compile Include="Assets\Scripts\BuildingWire.cs" />
     <Compile Include="Assets\Scripts\MainGridScript.cs" />
     <Reference Include="UnityEditor.StandardEvents">

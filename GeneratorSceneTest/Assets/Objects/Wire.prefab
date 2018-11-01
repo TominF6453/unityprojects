@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4788854696765060}
   - component: {fileID: 33470599002212826}
   - component: {fileID: 23954534322064370}
+  - component: {fileID: 114639159763562708}
   m_Layer: 0
   m_Name: Wire
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1260948895421316}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114639159763562708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1260948895421316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8c2e2d3ee696e42b75bc335c45aa68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainGrid: {fileID: 0}
+  pos: {x: 0, y: 0}
+  wireSum: 0
