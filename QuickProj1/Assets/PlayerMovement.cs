@@ -6,10 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
 	public float jump = 6.0f;
 	public float speed = 3.0f;
-	public float horiz;
 
-	public GameObject rayTarget;
+	private float horiz;
 
+	private GameObject rayTarget;
 	private BoxCollider2D collider;
 	private Rigidbody2D body;
 	private Transform transform;
@@ -19,8 +19,7 @@ public class PlayerMovement : MonoBehaviour
 	public Sprite idle;
 	public Sprite step;
 
-	public float dir_x;
-	public float dir_y;
+	public GameObject enemy;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -28,11 +27,15 @@ public class PlayerMovement : MonoBehaviour
 		transform = GetComponent<Transform>();
 		body = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer>();
+		rayTarget = gameObject.transform.Find("RayTarget").gameObject;
 	}
 
 	// Update is called once per frame
 	void Update() {
-
+		//Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		//if (Input.GetMouseButtonDown(0)) {
+		//	Instantiate(enemy, new Vector3(mp.x, mp.y, 0f), Quaternion.identity);
+		//}
 	}
 
 	// FixedUpdate for physics checks
@@ -43,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
 		if (Input.GetAxis("Vertical") > 0) {
 			RaycastHit2D hit = Physics2D.Raycast(rayTarget.transform.position, Vector2.down, 0.03f);
-			if (hit.collider != null) {
+			if (hit.collider != null && hit.collider.isTrigger == false) {
 				body.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
 			}
 		}
@@ -95,11 +98,5 @@ public class PlayerMovement : MonoBehaviour
 			// Reset
 			animcounter = 0;
 		}
-
-		// Test
-		/*//Vector2 unitdir = curdir.normalized;
-		unitdir.Normalize();
-		dir_x = unitdir.x;
-		dir_y = unitdir.y;//*/
 	}
 }

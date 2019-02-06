@@ -61,6 +61,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EnemyAnimator.cs" />
+    <Compile Include="Assets\EnemyBehaviour.cs" />
+    <Compile Include="Assets\HitBehaviour.cs" />
     <Compile Include="Assets\KnightMovement.cs" />
     <Compile Include="Assets\PlayerMovement.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">

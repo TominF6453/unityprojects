@@ -6,10 +6,8 @@ public class KnightMovement : MonoBehaviour
 {
 	public float jump = 8.0f;
 	public float speed = 4.0f;
-	public float horiz;
 
-	public GameObject rayTarget;
-
+	private GameObject rayTarget;
 	private BoxCollider2D collider;
 	private Rigidbody2D body;
 	private Transform transform;
@@ -19,8 +17,9 @@ public class KnightMovement : MonoBehaviour
 	public Sprite idle;
 	public Sprite step;
 
-	public float dir_x;
-	public float dir_y;
+	private GameObject player;
+
+	public GameObject hit;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +28,9 @@ public class KnightMovement : MonoBehaviour
 		transform = GetComponent<Transform>();
 		body = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer>();
-    }
+		player = GameObject.FindGameObjectWithTag("Player");
+		rayTarget = gameObject.transform.Find("RayTarget").gameObject;
+	}
 
     // Update is called once per frame
     void Update()
@@ -53,23 +54,28 @@ public class KnightMovement : MonoBehaviour
 		body.velocity = new Vector2(movement.x * speed, body.velocity.y);
 		//*/
 
-		// Mouse Controls
-		Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		Vector2 unitdir = new Vector2(mp.x - transform.position.x, mp.y - transform.position.y);
-		float distance2mouse = unitdir.magnitude;
-		unitdir.Normalize();
+		// Mouse Controls (Rewritten to target closest enemy to player)
+		//Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		Vector2 unitdir = Vector2.zero;
+		GameObject enemy = GetClosestEnemyToPlayer();
+		if (enemy != null) {
+			Vector3 mp = GetClosestEnemyToPlayer().transform.position;
+			unitdir = new Vector2(mp.x - transform.position.x, mp.y - transform.position.y);
+			float distance2mouse = unitdir.magnitude;
+			unitdir.Normalize();
 
-		float x = 1;
-		if (unitdir.x < 0) x *= -1;
-		x *= Mathf.Sqrt(Mathf.Abs(unitdir.x));
-		
-		if (unitdir.y >= 0.70 && distance2mouse >= 1f) {
-			RaycastHit2D hit = Physics2D.Raycast(rayTarget.transform.position, Vector2.down, 0.03f);
-			if (hit.collider != null) {
-				body.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
+			float x = Mathf.Sign(unitdir.x);
+			//if (unitdir.x < 0) x *= -1;
+			x *= Mathf.Sqrt(Mathf.Abs(unitdir.x));
+
+			if (unitdir.y >= 0.70 && distance2mouse >= 1f) {
+				RaycastHit2D hit = Physics2D.Raycast(rayTarget.transform.position, Vector2.down, 0.03f);
+				if (hit.collider != null) {
+					body.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
+				}
 			}
+			body.velocity = new Vector2(x * speed, body.velocity.y);
 		}
-		body.velocity = new Vector2(x * speed, body.velocity.y);
 		//*/
 
 		// Animation
@@ -97,11 +103,30 @@ public class KnightMovement : MonoBehaviour
 			// Reset
 			animcounter = 0;
 		}
+	}
 
-		// Test
-		//Vector2 unitdir = curdir.normalized;
-		unitdir.Normalize();
-		dir_x = unitdir.x;
-		dir_y = unitdir.y;
+	private void OnTriggerEnter2D(Collider2D collision) {
+		if (collision.gameObject.CompareTag("Enemy")) {
+			Instantiate(hit, collision.transform.position, Quaternion.identity);
+			Destroy(collision.gameObject);
+		}
+	}
+
+	private GameObject GetClosestEnemyToPlayer() {
+		GameObject[] enemies;
+		enemies = GameObject.FindGameObjectsWithTag("Enemy");
+		GameObject closest = null;
+		float dist = Mathf.Infinity;
+		Vector3 pos = player.transform.position;
+
+		foreach (GameObject enemy in enemies) {
+			Vector3 diff = enemy.transform.position - pos;
+			float curdist = diff.sqrMagnitude;
+			if (curdist < dist) {
+				closest = enemy;
+				dist = curdist;
+			}
+		}
+		return closest;
 	}
 }
